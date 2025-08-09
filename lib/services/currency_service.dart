@@ -19,4 +19,42 @@ class CurrencyRepository {
       throw Exception('Failed to fetch exchange rates.');
     }
   }
+
+  String _convertTimestampToDateTime(int timestamp) {
+    // Convert timestamp (seconds) to DateTime
+    final dateTimeUtc =
+        DateTime.fromMillisecondsSinceEpoch(timestamp * 1000, isUtc: true);
+
+    // Convert to IST (UTC+5:30)
+    final dateTimeIst = dateTimeUtc.add(const Duration(hours: 5, minutes: 30));
+
+    // Format the date and time (e.g., "August 9, 2025 23:06:06 IST")
+    final formattedDateTime = '${_getMonthName(dateTimeIst.month)} '
+        '${dateTimeIst.day}, '
+        '${dateTimeIst.year} '
+        '${dateTimeIst.hour.toString().padLeft(2, '0')}:'
+        '${dateTimeIst.minute.toString().padLeft(2, '0')}:'
+        '${dateTimeIst.second.toString().padLeft(2, '0')} IST';
+
+    return formattedDateTime;
+  }
+
+  /// Helper method to convert month number to month name
+  String _getMonthName(int month) {
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    return monthNames[month - 1];
+  }
 }

@@ -1,10 +1,33 @@
-part of 'auth_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:thoughtbox/model/user_model.dart';
 
-sealed class AuthState extends Equatable {
+abstract class AuthState extends Equatable {
   const AuthState();
-  
+
   @override
   List<Object> get props => [];
 }
 
-final class AuthInitial extends AuthState {}
+class AuthInitial extends AuthState {}
+
+class AuthLoading extends AuthState {}
+
+class AuthAuthenticated extends AuthState {
+  final UserModel user;
+
+  const AuthAuthenticated(this.user);
+
+  @override
+  List<Object> get props => [user];
+}
+
+class AuthError extends AuthState {
+  final String message;
+
+  const AuthError(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
+
+class AuthUnauthenticated extends AuthState {}
