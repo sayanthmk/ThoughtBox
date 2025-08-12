@@ -107,6 +107,7 @@ class CurrencyConverterPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                Text(state.lastUpdated.toString())
               ],
             ),
           );

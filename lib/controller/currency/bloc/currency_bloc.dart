@@ -16,14 +16,29 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
     emit(state.copyWith(isLoading: true, error: null));
 
     try {
-      final quotes = await repository.fetchExchangeRates();
+      final data = await repository.fetchExchangeRates();
+      final quotes = data['quotes'] as Map<String, dynamic>;
+      final timestamp = data['timestamp'] as int;
+      final lastUpdated = data['lastUpdated'] as String;
+
       final currencies = quotes.keys.map((key) => key.substring(3)).toList()
         ..sort();
+
+      String? warningMessage;
+      final nowInSeconds = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      if (nowInSeconds - timestamp > 300) {
+        // 300 seconds = 5 minutes
+        warningMessage = '⚠️ Rates are older than 5 minutes.';
+      }
 
       emit(state.copyWith(
         currencies: currencies,
         exchangeRates: quotes,
+        lastUpdated: lastUpdated,
+        timestamp: timestamp,
         isLoading: false,
+        warning: warningMessage,
+        error: null, // Clear any previous error
       ));
     } catch (e) {
       emit(state.copyWith(isLoading: false, error: e.toString()));
@@ -33,7 +48,6 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
   void _onConvertCurrency(ConvertCurrency event, Emitter<CurrencyState> emit) {
     try {
       final amount = double.parse(event.amount);
-
       double convertedValue = 0.0;
 
       if (event.sourceCurrency == event.targetCurrency) {
