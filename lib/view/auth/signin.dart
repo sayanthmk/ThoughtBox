@@ -2,24 +2,21 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:thoughtbox/const/colors.dart';
-import 'package:thoughtbox/const/coustom_textformfield.dart';
 import 'package:thoughtbox/const/custom_button.dart';
+import 'package:thoughtbox/const/custom_textformfield.dart';
 import 'package:thoughtbox/controller/auth/bloc/auth_event.dart';
 import 'package:thoughtbox/controller/auth/bloc/auth_state.dart';
 import 'package:thoughtbox/view/convert/convert_page.dart';
 import '../../controller/auth/bloc/auth_bloc.dart';
 import 'signup.dart';
 
-class EmailPasswordLoginPage extends StatefulWidget {
-  const EmailPasswordLoginPage({super.key});
+class EmailPasswordLoginPage extends StatelessWidget {
+  EmailPasswordLoginPage({super.key});
 
-  @override
-  State<EmailPasswordLoginPage> createState() => _EmailPasswordLoginPageState();
-}
-
-class _EmailPasswordLoginPageState extends State<EmailPasswordLoginPage> {
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override

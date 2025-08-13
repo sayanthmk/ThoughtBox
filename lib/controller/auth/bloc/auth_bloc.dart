@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:thoughtbox/const/auth_datasourse.dart';
+import 'package:thoughtbox/services/auth_service.dart';
 import 'package:thoughtbox/controller/auth/bloc/auth_event.dart';
 import 'package:thoughtbox/controller/auth/bloc/auth_state.dart';
 import 'package:thoughtbox/model/user_model.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final FirebaseDataSource firebaseDataSource;
+  final FirebaseService firebaseDataSource;
 
   AuthBloc({required this.firebaseDataSource}) : super(AuthInitial()) {
     on<SignInEmailPasswordEvent>(_onSignInWithEmailAndPassword);

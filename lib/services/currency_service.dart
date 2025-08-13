@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
 
 class CurrencyRepository {
-  static const String _apiKey = 'a69dedc38f5137de957fa2651a67fb88';
+  static const String _apiKey = '494af1f3bf5c9fa5761ab227c898ef8f';
   static const String _apiUrl = 'http://api.currencylayer.com/live';
   static const String _boxName = 'exchange_rates_box';
   static const String _cacheKey = 'exchange_rates_cache';

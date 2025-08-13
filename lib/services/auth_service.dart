@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-class FirebaseDataSource {
+class FirebaseService {
   final FirebaseAuth firebaseAuth;
 
-  FirebaseDataSource({
+  FirebaseService({
     required this.firebaseAuth,
   });
 

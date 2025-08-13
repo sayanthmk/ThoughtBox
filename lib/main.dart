@@ -2,12 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:thoughtbox/const/auth_datasourse.dart';
+import 'package:thoughtbox/services/auth_service.dart';
 import 'package:thoughtbox/controller/auth/bloc/auth_bloc.dart';
 import 'package:thoughtbox/controller/currency/bloc/currency_bloc.dart';
 import 'package:thoughtbox/services/currency_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:thoughtbox/view/auth/signin.dart';
+import 'package:thoughtbox/view/convert/convert_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(
-                  firebaseDataSource: FirebaseDataSource(
+                  firebaseDataSource: FirebaseService(
                     firebaseAuth: FirebaseAuth.instance,
                   ),
                 )),
@@ -48,8 +49,8 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-        // home: CurrencyConverterPage(),
-        home: EmailPasswordLoginPage(),
+        home: CurrencyConverterPage(),
+        // home: EmailPasswordLoginPage(),
       ),
     );
   }
