@@ -5,14 +5,14 @@ import 'package:thoughtbox/controller/auth/bloc/auth_event.dart';
 import 'package:thoughtbox/controller/auth/bloc/auth_state.dart';
 import 'package:thoughtbox/view/Auth/signin.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class Profile extends StatelessWidget {
+  const Profile({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Home'),
+        title: const Text('Profile'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

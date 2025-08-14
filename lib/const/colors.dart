@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color primary = Color.fromRGBO(25, 154, 142, 1);
-  static const Color secondary = Color(0xFFFFFFFF);
-  static const Color appBarColor = Color.fromRGBO(25, 154, 142, 1);
-  static const Color buttonColor = Color.fromRGBO(25, 154, 142, 1);
-  static const Color title = Colors.black;
-  static const Color subTitle = Color.fromRGBO(198, 200, 204, 1);
+  static Color primary = Colors.white;
+  static Color secondary = Colors.black; //backgroud color
+  static Color textColor = Colors.white;
+  static Color hintText = Colors.white;
+  static Color buttonColor = const Color(0xFFD81B60);
+  static Color grey = Colors.white;
+  static Color success = Colors.green;
+
+  static Color primaryColor = const Color(0xFFD81B60);
+  static Color darkBackground = const Color(0xFF20232B);
 }

@@ -30,3 +30,6 @@ class SignUpEmailPasswordEvent extends AuthEvent {
 class SignOutEvent extends AuthEvent {
   const SignOutEvent();
 }
+
+class CheckUserLoginEvent extends AuthEvent {} // New event
+

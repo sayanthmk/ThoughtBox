@@ -7,8 +7,7 @@ import 'package:thoughtbox/controller/auth/bloc/auth_bloc.dart';
 import 'package:thoughtbox/controller/currency/bloc/currency_bloc.dart';
 import 'package:thoughtbox/services/currency_service.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:thoughtbox/view/auth/signin.dart';
-import 'package:thoughtbox/view/convert/convert_page.dart';
+import 'package:thoughtbox/view/splash/splash.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,8 +48,7 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-        home: CurrencyConverterPage(),
-        // home: EmailPasswordLoginPage(),
+        home: SplashScreen(),
       ),
     );
   }

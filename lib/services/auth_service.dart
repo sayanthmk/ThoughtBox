@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FirebaseService {
   final FirebaseAuth firebaseAuth;
@@ -8,17 +9,13 @@ class FirebaseService {
     required this.firebaseAuth,
   });
 
-//------------------SignIn --Email & Password ------------------------------------//
-
   Future<User?> signInWithEmailAndPassword(
       String email, String password) async {
     final UserCredential userCredential = await firebaseAuth
         .signInWithEmailAndPassword(email: email, password: password);
-
+    await saveUserLoggedIn();
     return userCredential.user;
   }
-
-//------------------SignUp --Email & Password ------------------------------------//
 
   Future<User?> signUpWithEmailAndPassword(
       String email, String password) async {
@@ -28,26 +25,32 @@ class FirebaseService {
         email: email,
         password: password,
       );
-
       return userCredential.user;
     } catch (e) {
       if (kDebugMode) {
         print('Error during sign-up: $e');
       }
-
       return null;
     }
   }
 
-//------------------SignOut ------------------------------------//
-
   Future<void> signOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     await firebaseAuth.signOut();
   }
 
-//------------------SignUp --Get the User ------------------------------------//
-
   User? getCurrentUser() {
     return firebaseAuth.currentUser;
+  }
+
+  Future<bool> checkUserLogin() async {
+    final sharedPref = await SharedPreferences.getInstance();
+    return sharedPref.getBool('isLoggedIn') ?? false;
+  }
+
+  Future<void> saveUserLoggedIn() async {
+    final sharedPref = await SharedPreferences.getInstance();
+    sharedPref.setBool('isLoggedIn', true);
   }
 }

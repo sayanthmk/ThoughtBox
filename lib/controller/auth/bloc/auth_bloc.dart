@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:thoughtbox/services/auth_service.dart';
 import 'package:thoughtbox/controller/auth/bloc/auth_event.dart';
 import 'package:thoughtbox/controller/auth/bloc/auth_state.dart';
@@ -12,6 +12,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignInEmailPasswordEvent>(_onSignInWithEmailAndPassword);
     on<SignUpEmailPasswordEvent>(_onSignUpWithEmailAndPassword);
     on<SignOutEvent>(_onSignOut);
+    on<CheckUserLoginEvent>(_onCheckUserLogin);
   }
 
   void _onSignInWithEmailAndPassword(
@@ -48,6 +49,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         event.password,
       );
       if (user != null) {
+        await firebaseDataSource.saveUserLoggedIn(); // Save login status
         final userModel = UserModel(id: user.uid, email: user.email);
         emit(AuthAuthenticated(userModel));
       } else {
@@ -67,6 +69,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await firebaseDataSource.signOut();
       emit(AuthUnauthenticated());
+    } catch (e) {
+      emit(AuthError(e.toString()));
+    }
+  }
+
+  void _onCheckUserLogin(
+    CheckUserLoginEvent event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    try {
+      final isLoggedIn = await firebaseDataSource.checkUserLogin();
+      if (isLoggedIn) {
+        final currentUser = firebaseDataSource.getCurrentUser();
+        if (currentUser != null) {
+          final userModel =
+              UserModel(id: currentUser.uid, email: currentUser.email);
+          emit(AuthAuthenticated(userModel));
+        } else {
+          emit(AuthUnauthenticated());
+        }
+      } else {
+        emit(AuthUnauthenticated());
+      }
     } catch (e) {
       emit(AuthError(e.toString()));
     }
