@@ -24,7 +24,7 @@ class SplashScreen extends StatelessWidget {
           if (state is AuthAuthenticated) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (_) => BottomNav()),
+              MaterialPageRoute(builder: (_) => const BottomNav()),
             );
           } else if (state is AuthUnauthenticated) {
             Navigator.pushReplacement(

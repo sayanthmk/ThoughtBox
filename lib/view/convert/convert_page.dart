@@ -1,24 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:glassmorphism/glassmorphism.dart';
 import 'package:bounce/bounce.dart';
 import 'package:thoughtbox/const/colors.dart';
 import 'package:thoughtbox/controller/currency/bloc/currency_bloc.dart';
 import 'package:thoughtbox/controller/currency/bloc/currency_event.dart';
-import 'package:thoughtbox/view/convert/widgets/dropdown.dart';
-
+import 'package:thoughtbox/view/convert/widgets/convert_card.dart';
+import 'package:thoughtbox/view/convert/widgets/currency_selector_page.dart';
 import '../../controller/currency/bloc/currency_state.dart';
 
 class CurrencyConverterPage extends StatelessWidget {
   CurrencyConverterPage({super.key});
 
-  // final TextEditingController _amountController =
-  //     TextEditingController(text: "100");
   final TextEditingController _amountController = TextEditingController();
 
   final ValueNotifier<String> _sourceCurrency = ValueNotifier('USD');
@@ -28,65 +24,9 @@ class CurrencyConverterPage extends StatelessWidget {
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
 
-    // final primaryColor = const Color(0xFFD81B60);
-    // final darkBackground = const Color(0xFF20232B);
-
-    // final List<String> currencies = ['USD', 'EUR', 'GBP', 'JPY'];
-    // final String convertedAmount = "91.50";
-    // final String lastUpdated = "2025-08-13 10:00 AM";
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<CurrencyBloc>().add(FetchCurrenciesAndRates());
     });
-
-    Widget buildCurrencyDropdown({
-      required String label,
-      required String value,
-      required List<String> currencies,
-      required ValueChanged<String?> onChanged,
-    }) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label.toUpperCase(),
-            style: TextStyle(
-              color: Colors.white54,
-              fontWeight: FontWeight.w800,
-              fontSize: 13.sp,
-            ),
-          ),
-          SizedBox(height: 4.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 35.w, vertical: 6.h),
-            decoration: BoxDecoration(
-              color: Colors.white12,
-              borderRadius: BorderRadius.circular(12.r),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-                value: currencies.contains(value) ? value : null,
-                items: currencies
-                    .map((currency) => DropdownMenuItem(
-                          value: currency,
-                          child: Text(
-                            currency,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900,
-                              fontSize: 18.sp,
-                            ),
-                          ),
-                        ))
-                    .toList(),
-                onChanged: onChanged,
-                dropdownColor: AppColors.darkBackground,
-                icon: const Icon(Icons.arrow_drop_down, color: Colors.white54),
-              ),
-            ),
-          ),
-        ],
-      );
-    }
 
     return Scaffold(
       backgroundColor: AppColors.darkBackground,
@@ -130,12 +70,6 @@ class CurrencyConverterPage extends StatelessWidget {
 
                   SizedBox(height: 20.h),
 
-                  // Lottie Animation
-                  // Lottie.asset(
-                  //   'asset/lottie/currency.json', // make sure you have this file
-                  //   height: 150.h,
-                  // ),
-
                   SizedBox(height: 20.h),
 
                   // Amount input
@@ -169,98 +103,15 @@ class CurrencyConverterPage extends StatelessWidget {
                   SizedBox(height: 20.h),
 
                   // Currency selection
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ValueListenableBuilder<String>(
-                          valueListenable: _sourceCurrency,
-                          builder: (context, value, _) {
-                            return CurrencyDropdown(
-                              label: 'From',
-                              value: value,
-                              currencies: ['USD', 'INR', 'EUR'],
-                              onChanged: (newValue) {
-                                if (newValue != null) {
-                                  _sourceCurrency.value = newValue;
-                                }
-                              },
-                            );
-
-                            // return buildCurrencyDropdown(
-                            //   label: 'From',
-                            //   value: value,
-                            //   currencies: state.currencies,
-                            //   onChanged: (newValue) {
-                            //     if (newValue != null) {
-                            //       _sourceCurrency.value = newValue;
-                            //     }
-                            //   },
-                            // );
-                          },
-                        ),
-                      ),
-                      Icon(Icons.swap_horiz_rounded,
-                          color: Colors.white54, size: 34.sp),
-                      // SizedBox(
-                      //   width: 50,
-                      // ),
-                      Expanded(
-                        child: ValueListenableBuilder<String>(
-                          valueListenable: _targetCurrency,
-                          builder: (context, value, _) {
-                            return buildCurrencyDropdown(
-                              label: 'To',
-                              value: value,
-                              currencies: state.currencies,
-                              onChanged: (newValue) {
-                                if (newValue != null) {
-                                  _targetCurrency.value = newValue;
-                                }
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+                  CurrencySelectorPage(
+                      sourceCurrency: _sourceCurrency,
+                      targetCurrency: _targetCurrency,
+                      state: state),
 
                   SizedBox(height: 20.h),
 
                   // Glassmorphism converted amount with shimmer
-                  GlassmorphicContainer(
-                    width: double.infinity,
-                    height: 100.h,
-                    borderRadius: 20.r,
-                    blur: 15,
-                    alignment: Alignment.center,
-                    border: 2,
-                    linearGradient: LinearGradient(
-                      colors: [
-                        Colors.white.withOpacity(0.1),
-                        Colors.white.withOpacity(0.05)
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderGradient: LinearGradient(
-                      colors: [
-                        Colors.white.withOpacity(0.5),
-                        Colors.white.withOpacity(0.5)
-                      ],
-                    ),
-                    child: Shimmer.fromColors(
-                      baseColor: Colors.white,
-                      highlightColor: Colors.pinkAccent,
-                      child: Text(
-                        " ${state.convertedAmount}",
-                        style: TextStyle(
-                          fontSize: 24.sp,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ),
-                  ),
-
+                  ConvertedAmountCard(state: state),
                   SizedBox(height: 8.h),
                   // Enhanced lastUpdated section - replace the existing simple Text widget
                   Container(

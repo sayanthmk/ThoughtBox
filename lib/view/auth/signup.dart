@@ -28,7 +28,7 @@ class SignUpPage extends StatelessWidget {
           if (state is AuthAuthenticated) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => CurrencyConverterPage()),
+              MaterialPageRoute(builder: (context) => EmailPasswordLoginPage()),
               (route) => false,
             );
           } else if (state is AuthError) {

@@ -8,7 +8,6 @@ class AppColors {
   static Color buttonColor = const Color(0xFFD81B60);
   static Color grey = Colors.white;
   static Color success = Colors.green;
-
   static Color primaryColor = const Color(0xFFD81B60);
   static Color darkBackground = const Color(0xFF20232B);
 }
