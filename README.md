@@ -50,9 +50,6 @@ It provides real-time currency conversion rates and also caches the latest fetch
 
 ---
 
-## 📦 Installation
+```
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/thoughtbox.git
-   ```
+```
